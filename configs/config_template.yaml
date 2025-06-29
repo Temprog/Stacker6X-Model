@@ -1,0 +1,43 @@
+# Configuration file template for the Web Vulnerability Detection project
+
+# Data loading
+data_path: "path/to/your/data/Detection_SQLI_XSS.csv" # Specify the path to your dataset
+sample_size: 10500 # Sample size for initial data processing
+
+# Data preprocessing
+random_state: 42 # Random state for reproducibility
+test_size: 0.3 # Proportion of the dataset to include in the test split
+
+# TF-IDF Vectorizer settings
+max_features: 10500 # Maximum number of features for TF-IDF
+ngram_range: [1, 2] # Ngram range for TF-IDF
+min_df: 2 # Minimum document frequency for terms
+max_df: 0.9 # Maximum document frequency for terms
+tfidf_vectorizer_path: "path/to/save/tfidf_vectorizer.pkl" # Specify the path to save/load the TF-IDF vectorizer
+
+# Model training
+# SVM
+svm_kernel: 'linear'
+
+# Logistic Regression
+lr_max_iter: 1000
+
+# MLP Neural Network
+nn_max_iter: 1000
+
+# Random Forest
+rf_n_estimators: 100
+rf_max_depth: null
+
+# Gradient Boosting
+gb_n_estimators: 100
+gb_learning_rate: 0.1
+
+# Model saving
+stacker6x_model_path: "path/to/save/stacker6x_trained_model.pkl" # Specify the path to save/load the trained model
+
+# Simulated data generation (for deployment testing)
+n_simulated_samples: 99 # Number of samples for simulated data
+
+# Class mapping
+class_mapping: {0: "SQLInjection", 1: "XSS", 2: "Normal"}
