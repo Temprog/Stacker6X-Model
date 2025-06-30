@@ -15,8 +15,8 @@ except ImportError:
 
 # Define the paths to your saved vectorizer and model
 # Make sure these paths are correct and the files exist
-VECTORIZER_PATH = '/content/drive/MyDrive/Colab Notebooks/tfidf_vectorizer.pkl'
-MODEL_PATH = '/content/drive/MyDrive/Colab Notebooks/Stacker6X_trained_model.pkl' # Or your preferred model
+VECTORIZER_PATH = 'Stacker6X-Model/artifacts/tfidf_vectorizer.pkl'
+MODEL_PATH = 'Stacker6X-Model/artifacts/Stacker6X_trained_model.pkl' # Or your preferred model
 
 def main():
     """
