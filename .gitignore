@@ -172,3 +172,9 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore the local configuration file containing specific paths
+config.yaml
+
+# Ignore saved model and vectorizer files (managed as artifacts elsewhere)
+*.pkl
