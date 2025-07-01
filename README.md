@@ -1,4 +1,4 @@
-# Development of Stacker6X Machine Learning model for Web Vulnerability and Attack Detection(SQLi and XSS)
+# Development of Stacker6X: ML model for Web Vulnerability and Attack Detection (SQLi and XSS)
 This project focuses on developing and evaluating a novel and advanced machine learning model calledStacker6X (an OOP-based stacked ensemble) designed to detect and classify common web attacks, specifically SQL Injection (SQLI) and Cross-Site Scripting (XSS). The goal is to identify malicious payloads within web requests targeting web applicationcs to enhance their security.
 
 ## Data Source
