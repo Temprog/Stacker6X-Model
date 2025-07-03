@@ -44,3 +44,6 @@ nltk.download('stopwords')
 
 # For saving and loading Python objects
 import joblib
+
+# Imports the random module for simulating/generating data randomly
+import random
