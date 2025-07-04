@@ -37,7 +37,7 @@ gb_learning_rate: 0.1
 stacker6x_model_path: "path/to/save/stacker6x_trained_model.pkl" # Specify the path to save/load the trained model
 
 # Simulated data generation (for deployment testing)
-n_simulated_samples: 99 # Number of samples for simulated data
+n_simulated_samples: 7752 # Number of samples for simulated data
 
 # Class mapping
 class_mapping: {0: "SQLInjection", 1: "XSS", 2: "Normal"}
