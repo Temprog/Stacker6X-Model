@@ -1,97 +1,120 @@
-# deployment/simulate_deployment.py
+# deployment_simulation.py
+
 import pandas as pd
 import numpy as np
+import os
 import joblib
-import re
-import urllib.parse
-import nltk
-from nltk.tokenize import word_tokenize
-from nltk.corpus import stopwords
-from sklearn.feature_extraction.text import TfidfVectorizer
+import random
 
-# Assume Stacker6X class (from models/Stacker6X.py) is available
+# --- 1. Simulate random samples per class ---
+def simulate_data(n_samples=7752):
+    samples_per_class = n_samples // 3
 
-# Ensure NLTK resources are downloaded (same as in preprocessing.py)
-try:
-    nltk.data.find('tokenizers/punkt')
-except nltk.downloader.DownloadError:
-    nltk.download('punkt')
-try:
-    nltk.data.find('corpora/stopwords')
-except nltk.downloader.DownloadError:
-    nltk.download('stopwords')
+    sql_payloads = [
+        "SELECT * FROM users WHERE id=1",
+        "OR 1 =1 --",
+        "UNION SELECT password FROM accounts",
+        "' OR '1'='1",
+        "'; DROP TABLE users; --"
+    ]
 
-def load_models(stacker_model_path, tfidf_vectorizer_path):
-    """Loads the trained Stacker6X model and TF-IDF vectorizer."""
-    stacker6X_model = joblib.load(stacker_model_path)
-    tfidf_vectorizer = joblib.load(tfidf_vectorizer_path)
-    print("Models loaded successfully.")
-    return stacker6X_model, tfidf_vectorizer
+    xss_payloads = [
+        "<script>alert('XSS')</script>",
+        "<img src=x onerror=alert('XSS')>",
+        "<svg onload=alert(1)>",
+        "<body onload=alert('test')>",
+        "<iframe src='javascript:alert(1)'></iframe>"
+    ]
 
-def preprocess_single_payload(payload, tfidf_vectorizer):
-    """Preprocesses a single payload string and vectorizes it."""
-    # Apply the same preprocessing steps as used during training
-    payload_cleaned = str(payload).lower()
-    payload_cleaned = payload_cleaned.strip().replace(r'\s+', ' ', regex=True)
-    payload_cleaned = payload_cleaned.replace(r'[^\x20-\x7E]', '', regex=True)
-    payload_cleaned = urllib.parse.unquote(payload_cleaned)
-    payload_cleaned = re.sub(r'[^a-zA-Z0-9<>"\'=%-]', ' ', payload_cleaned)
+    normal_payloads = [
+        "Normal login attempt",
+        "User submitted contact form",
+        "Page loaded successfully",
+        "Viewing profile page",
+        "Search results for 'shoes'",
+        "Login successful",
+        "Order placed for 3 items",
+        "Welcome back, Mark!",
+        "Welcome back, John!",
+        "User profile updated",
+        "Settings saved successfully",
+        "You have logged out",
+        "Search: hiking backpacks",
+        "Blog post: Best coding practices",
+        "Comment added: Nice article!"
+    ]
 
-    # Tokenization and stop word removal (using the same combined list)
-    stop_words = set(stopwords.words('english'))
-    custom_stop_words = {'www', 'http', 'https', 'xssed', 'xss', 'sql'}
-    combined_stop_words = list(stop_words.union(custom_stop_words))
-    payload_tokens = word_tokenize(payload_cleaned)
-    payload_cleaned_tokens = [word for word in payload_tokens if word not in combined_stop_words]
+    raw_text_data = (
+        random.choices(sql_payloads, k=samples_per_class) +
+        random.choices(xss_payloads, k=samples_per_class) +
+        random.choices(normal_payloads, k=samples_per_class)
+    )
+    labels = [0]*samples_per_class + [1]*samples_per_class + [2]*samples_per_class
 
-    # Join tokens back to string for vectorization
-    payload_cleaned_str = ' '.join(payload_cleaned_tokens)
+    combined = list(zip(raw_text_data, labels))
+    random.shuffle(combined)
+    raw_text_data, labels = zip(*combined)
 
-    # Vectorize the cleaned payload
-    X_vectorized = tfidf_vectorizer.transform([payload_cleaned_str])
+    return pd.DataFrame({'text': raw_text_data, 'True_Label': labels})
 
-    return X_vectorized
+# --- 2. Load model and vectorizer ---
+def load_model_and_vectorizer(model_path, vectorizer_path):
+    if not os.path.exists(model_path):
+        raise FileNotFoundError(f"Model file not found at: {model_path}")
+    if not os.path.exists(vectorizer_path):
+         raise FileNotFoundError(f"Vectorizer file not found at: {vectorizer_path}")
 
-def simulate_detection(payloads, stacker6X_model, tfidf_vectorizer):
-    """Simulates detection on a list of payloads."""
-    predictions = []
+    stacker6X_model_instance = joblib.load(model_path)
+    loaded_tfidf_vectorizer = joblib.load(vectorizer_path)
+    return stacker6X_model_instance, loaded_tfidf_vectorizer
+
+# --- 3. Make predictions ---
+def make_predictions(df, model, vectorizer):
+    X_vectorized = vectorizer.transform(df['text'])
+    y_pred = model.predict(X_vectorized)
+    return y_pred
+
+# --- 4. Add predictions to DataFrame and map to labels ---
+def process_predictions(df, y_pred):
+    df_result = df.copy().reset_index(drop=True)
+    df_result['y_pred_st'] = y_pred
+
     class_mapping = {0: "SQLInjection", 1: "XSS", 2: "Normal"}
+    df_result['Predicted_Label'] = [class_mapping[int(pred)] for pred in y_pred] # Ensure conversion to int
 
-    for payload in payloads:
-        # Preprocess and vectorize the single payload
-        X_payload_vectorized = preprocess_single_payload(payload, tfidf_vectorizer)
+    return df_result
 
-        # Make prediction using the Stacker6X model
-        prediction_numeric = stacker6X_model.predict(X_payload_vectorized)[0]
+if __name__ == "__main__":
+    # Define paths
+    model_path = '/content/drive/MyDrive/Colab Notebooks/Stacker6X_trained_model.pkl'
+    vectorizer_path = '/content/drive/MyDrive/Colab Notebooks/tfidf_vectorizer.pkl'
 
-        # Map numeric prediction to class name
-        predicted_label = class_mapping.get(prediction_numeric, "Unknown")
-        predictions.append(predicted_label)
+    # Simulate data
+    print("Simulating data...")
+    simulated_df = simulate_data()
+    print(f"Simulated data shape: {simulated_df.shape}")
 
-    return predictions
+    # Load model and vectorizer
+    print(f"Loading model from {model_path} and vectorizer from {vectorizer_path}...")
+    try:
+        stacker_model, tfidf_vectorizer = load_model_and_vectorizer(model_path, vectorizer_path)
+        print("Model and vectorizer loaded successfully.")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        exit()
 
-# Example usage (assuming models are saved in Google Drive)
-# if __name__ == '__main__':
-#     stacker_model_path = '/content/drive/MyDrive/Colab Notebooks/Stacker6X_trained_model.pkl'
-#     tfidf_vectorizer_path = '/content/drive/MyDrive/Colab Notebooks/tfidf_vectorizer.pkl'
+    # Make predictions
+    print("Making predictions...")
+    predictions = make_predictions(simulated_df, stacker_model, tfidf_vectorizer)
+    print("Predictions made.")
 
-#     # Load the trained models
-#     stacker6X_model, tfidf_vectorizer = load_models(stacker_model_path, tfidf_vectorizer_path)
+    # Process predictions and display results
+    print("Processing predictions...")
+    result_df = process_predictions(simulated_df, predictions)
+    print("\nPrediction Results (first 10 rows):")
+    print(result_df[['text', 'True_Label', 'y_pred_st', 'Predicted_Label']].head(10))
 
-#     # Simulate new payloads
-#     simulated_payloads = [
-#         "SELECT * FROM users WHERE username = 'admin' --'", # SQLI
-#         "<script>alert('hello')</script>", # XSS
-#         "This is a normal comment.", # Normal
-#         "' OR '1'='1", # SQLI
-#         "<img src='x' onerror='alert(1)'>", # XSS
-#         "Just a regular sentence." # Normal
-#     ]
-
-#     # Perform simulated detection
-#     predictions = simulate_detection(simulated_payloads, stacker6X_model, tfidf_vectorizer)
-
-#     # Print the results
-#     print("\nSimulated Detection Results:")
-#     for payload, prediction in zip(simulated_payloads, predictions):
-#         print(f"Payload: '{payload}' -> Predicted: {prediction}")
+    # You can further analyze the result_df here (e.g., generate classification report)
+    # from sklearn.metrics import classification_report
+    # print("\nClassification Report:")
+    # print(classification_report(result_df['True_Label'], result_df['y_pred_st']))
