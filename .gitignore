@@ -177,4 +177,4 @@ cython_debug/
 config.yaml
 
 # Ignore saved model and vectorizer files (managed as artifacts elsewhere)
-*.pkl
+#*.pkl
