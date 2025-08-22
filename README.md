@@ -3,7 +3,6 @@
 This project implements a machine learning pipeline to detect SQL Injection (SQLi) and Cross-Site Scripting (XSS) attacks in web request payloads, with deployment on AWS EC2 and a user-friendly frontend.
 
 
-
 ## 🚀 Overview
 The project includes:
 
@@ -13,13 +12,17 @@ The project includes:
 - Deployment on AWS EC2 with a frontend interface for real-time payload testing.
 
 
+## 🌍 Usefulness & Significance
+- SQL Injection (SQLi) and Cross-Site Scripting (XSS) are two of the most critical web vulnerabilities, consistently ranked in the OWASP Top 10.
+- SQLi allows attackers to manipulate backend databases, while XSS enables injection of malicious scripts into web pages viewed by users.
+- This project demonstrates how machine learning can be applied to strengthen web security, moving beyond traditional rule-based detection.
+- By integrating the model into APIs, web frontends, or cloud deployments, it shows potential for practical intrusion detection systems (IDS) that adapt to evolving attack patterns.
+
 
 ## 🗂️ Dataset
-
 - CSV file containing web request payloads and labels: SQL Injection, XSS, Command Injection, or Normal.
 - Preprocessing includes sampling, cleaning, tokenization, stopword removal and balancing.
 - Sourced from Kaggle with 206,636 instances.
-
 
 
 ## ✨ Data Preprocessing
@@ -32,12 +35,10 @@ Key steps:
 - Upsampling minority classes (SQLi, XSS) to balance dataset and reduce bias.
 
 
-
 ## 🛠️ Feature Engineering & Extraction
 - Added Payload_Length feature (number of tokens).
 - Remove payloads with <3 tokens.
 - TF-IDF vectorization (unigrams + bigrams, min_df=2, max_df=0.9, max_features based on sample size).
-
 
 
 ## 🧠 Model Architecture & Evaluation
@@ -47,7 +48,6 @@ Key steps:
   - Meta-learner: SVM
 - Feature Extraction: TF-IDF with unigrams/bigrams
 - Evaluation Metrics: Accuracy, classification report, confusion matrix
-
 
 
 ## 🚀 Usage & Testing
@@ -63,7 +63,6 @@ curl -X POST https://api.stacker6.com/predict \
      -d '{"test": "type test input here"}' 
      
 
-
 ## 📈 Results & Impact
 
 | Model               | Accuracy   |
@@ -76,13 +75,10 @@ curl -X POST https://api.stacker6.com/predict \
 | **Stacker6X**       | **98%** ✅ |
 
 
-
 ## 🌐 Deployment & Application
-
 ### Deployment Simulation
 Before deploying on EC2:
 - Saved trained Stacker6X model and TF-IDF vectorizer as pickle files.
-
 - Simulation steps:
   1. Load saved model and vectorizer.
   2. Generate synthetic payloads (SQLi, XSS, Normal).
@@ -92,14 +88,12 @@ Before deploying on EC2:
 ✅ Ensured reliability before production deployment.
 
 
-
 ### EC2 Deployment & Frontend
-Backend: Flask/FastAPI REST API serving the trained model.
-Frontend: Web interface for users to paste payloads or upload .txt files.
-Workflow: Payload → API → preprocessing + TF-IDF → model prediction → frontend result display.
+- Backend: Flask/FastAPI REST API serving the trained model.
+- Frontend: Web interface for users to paste payloads or upload .txt files.
+- Workflow: Payload → API → preprocessing + TF-IDF → model prediction → frontend result display.
 
 🔗 [Live Demo](https://api.stacker6x.com) 
-
 
 
 ## 📈 Visualizations
@@ -110,7 +104,6 @@ Workflow: Payload → API → preprocessing + TF-IDF → model prediction → fr
 - Actual vs predicted counts for Stacker6X.
 
 
-
 ## 📥 How to Run the Notebook
 1. Place Detection_SQLI_XSS.csv in Google Drive (/content/drive/MyDrive/Colab Notebooks/).
 2. Run notebook cells sequentially.
@@ -118,6 +111,13 @@ Workflow: Payload → API → preprocessing + TF-IDF → model prediction → fr
 4. Trained model and vectorizer saved as pickle files.
 
 
-
 ## ⚙️ Dependencies
 pandas, numpy, os, tensorflow, nltk, sklearn, matplotlib, seaborn, wordcloud, urllib.parse, re, statsmodels, joblib
+
+
+## 🚧 Future Directions
+- Expand dataset with more diverse attack types (incl. command injection).
+- Explore advanced feature engineering and deep learning (RNNs, Transformers).
+- Refine ensemble strategies for higher accuracy.
+- Build real-time, explainable, and robust detection.
+- Strengthen deployment into APIs, web apps, or WAFs.
