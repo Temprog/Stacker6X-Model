@@ -18,6 +18,7 @@ The project includes:
 
 - CSV file containing web request payloads and labels: SQL Injection, XSS, Command Injection, or Normal.
 - Preprocessing includes sampling, cleaning, tokenization, stopword removal and balancing.
+- Sourced from Kaggle with 206,636 instances.
 
 
 
