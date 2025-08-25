@@ -57,11 +57,11 @@ Users can visit the web UI (hosted on EC2) to paste a text or document and check
 - Command-line Testing:
 The API can also be accessed via curl for quick command-line evaluation:
 
-```bash ```
+```bash
 curl -X POST https://api.stacker6.com/predict \
      -H "Content-Type: application/json" \
      -d '{"test": "type test input here"}' 
-     
+```     
 
 ## 📈 Results & Impact
 
