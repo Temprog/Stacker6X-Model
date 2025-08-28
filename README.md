@@ -126,3 +126,9 @@ Before deploying on EC2:
 - Refine ensemble strategies for higher accuracy.
 - Build real-time, explainable, and robust detection.
 - Strengthen deployment into APIs, web apps, or WAFs.
+
+## 📂 Related Repositories
+- 🛡️ [Stacker6X Backend (Flask REST API)](https://github.com/Temprog/Stacker6X-API)  
+  Flask REST API for serving predictions from the trained model, with an added regex-based guardrail to reduce false positives.  
+- 🎨 [Stacker6X Frontend for API (HTML/JS UI)](https://github.com/Temprog/Stacker6X-frontend)  
+  Lightweight web interface for interacting with the backend API and visualizing predictions.  
