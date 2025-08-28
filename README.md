@@ -1,15 +1,16 @@
 
 # SQL Injection & XSS Detection Model
-This project implements a machine learning pipeline to detect SQL Injection (SQLi) and Cross-Site Scripting (XSS) attacks in web request payloads, with deployment on AWS EC2 and a user-friendly frontend.
+This project applies **machine learning to web security** by detecting **SQL Injection (SQLi)** and **Cross-Site Scripting (XSS)** attacks within web requests and their HTTP payloads.
+It explores multiple ML models, introduces a **novel custom stacking ensemble (Stacker6X)** and is fully deployed as a **web application on AWS EC2** with both backend and frontend interfaces.
 
 
 ## 🚀 Overview
-The project includes:
-
+- Built a complete ML pipeline: data preprocessing → feature engineering → model training → evaluation → deployment.  
 - Multiple classification models: SVM, Random Forest, Logistic Regression, Gradient Boosting, MLP, Extra Trees and a custom Stacking Ensemble (Stacker6X).
 - End-to-end data preprocessing, feature engineering and vectorization.
 - Visualization and evaluation of model performance.
-- Deployment on AWS EC2 with a frontend interface for real-time payload testing.
+- Achieved **98% accuracy** with the custom Stacker6X ensemble model.  
+- Deployed on **AWS EC2** as a production-ready app for real-time prediction and payload classification with REST API serving the model and a web UI for users to test for malicious code.  
 
 
 ## 🌍 Usefulness & Significance
@@ -89,19 +90,19 @@ Before deploying on EC2:
 
 
 ### EC2 Deployment & Frontend
-- Backend: Flask/FastAPI REST API serving the trained model.
-- Frontend: Web interface for users to paste payloads or upload .txt files.
-- Workflow: Payload → API → preprocessing + TF-IDF → model prediction → frontend result display.
+- **Backend:** Flask REST API serving the trained model.
+- **Frontend:** Web user interface for users to paste payloads or upload .txt files to test for malicious code.  
+- **Workflow:** Payload → API → preprocessing + TF-IDF → model prediction → frontend result display.
 
 🔗 [Live Demo](https://api.stacker6x.com) 
 
 
 ## 📈 Visualizations
-- Word clouds (illustrating frequent terms - general, SQLi, XSS payloads).
-- Pie & bar charts for class distribution.
-- Model accuracy comparison charts.
-- Confusion matrices for each model's prediction performance.
-- Actual vs predicted counts for Stacker6X.
+- [Word clouds (illustrating frequent terms - SQLi, XSS payloads)](https://github.com/Temprog/Stacker6X-Model/blob/main/assets/word_cloud.png)
+- [Pie & bar charts for class (categorical) distribution of the Payload](https://github.com/Temprog/Stacker6X-Model/blob/main/assets/class_distribution_charts.png)
+- [Model accuracy comparison charts](https://github.com/Temprog/Stacker6X-Model/blob/main/assets/accuracy_comparison.png)
+- [Confusion matrices for each model's prediction performance](https://github.com/Temprog/Stacker6X-Model/blob/main/assets/confusion_matrix.png)
+- [Actual vs predicted counts for Stacker6X](https://github.com/Temprog/Stacker6X-Model/blob/main/assets/actual_predicted.png)
 
 
 ## 📥 How to Run the Notebook
@@ -111,9 +112,13 @@ Before deploying on EC2:
 4. Trained model and vectorizer saved as pickle files.
 
 
-## ⚙️ Dependencies
-pandas, numpy, os, tensorflow, nltk, sklearn, matplotlib, seaborn, wordcloud, urllib.parse, re, statsmodels, joblib
-
+## 🛠️ Technologies & Tools Used
+- **Languages:** Python, HTML, CSS, JavaScript  
+- **ML/DL:** Scikit-learn, TensorFlow  
+- **NLP:** NLTK, TF-IDF Vectorizer  
+- **Visualization:** Matplotlib, Seaborn, WordCloud  
+- **Deployment:** Flask/FastAPI, AWS EC2  
+- **Other:** Pandas, NumPy, Statsmodels, Joblib, os, urllib.parse, re
 
 ## 🚧 Future Directions
 - Expand dataset with more diverse attack types (incl. command injection).
