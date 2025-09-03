@@ -128,7 +128,7 @@ Before deploying on EC2:
 - Strengthen deployment into APIs, web apps, or WAFs.
 
 ## 📂 Related Repositories
-- 🛡️ [Stacker6X Backend (Flask REST API)](https://github.com/Temprog/Stacker6X-API)  
+- 🛡️ [Stacker6X API - Backend (Flask REST API)](https://github.com/Temprog/Stacker6X-API)  
   Flask REST API for serving predictions from the trained model, with an added regex-based guardrail to reduce false positives.  
-- 🎨 [Stacker6X Frontend for API (HTML/JS UI)](https://github.com/Temprog/Stacker6X-frontend)  
+- 🎨 [Stacker6X App – Web UI for interacting with the Stacker6X API](https://github.com/Temprog/Stacker6X-App)  
   Lightweight web interface for interacting with the backend API and visualizing predictions.  
