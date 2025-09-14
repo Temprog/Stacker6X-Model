@@ -1,6 +1,6 @@
 
 # SQL Injection & XSS Detection Model
-This project applies **machine learning to web security** by detecting **SQL Injection (SQLi)** and **Cross-Site Scripting (XSS)** attacks within web requests and their HTTP payloads.
+This project applies **machine learning to web security** for detecting **SQL Injection (SQLi)** and **Cross-Site Scripting (XSS)** attacks within web requests and their HTTP payloads.
 It explores multiple ML models, introduces a **novel custom stacking ensemble (Stacker6X)** and is fully deployed as a **web application on AWS EC2** with both backend and frontend interfaces.
 
 
