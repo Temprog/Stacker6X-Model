@@ -10,7 +10,14 @@ It explores multiple ML models, introduces a **novel custom stacking ensemble (S
 - End-to-end data preprocessing, feature engineering and vectorization.
 - Visualization and evaluation of model performance.
 - Achieved **98% accuracy** with the custom Stacker6X ensemble model.  
-- Deployed on **AWS EC2** as a production-ready app for real-time prediction and payload classification with REST API serving the model and a web UI for users to test for malicious code.  
+- Deployed on **AWS EC2** as a production-ready app for real-time prediction and payload classification with REST API serving the model and a web UI for users to test for malicious code.
+
+
+### 📄 Research Documentation
+This repository contains the implementation developed as part of my MSc Artificial Intelligence dissertation research into AI-based web vulnerability detection.
+
+**[View MSc Dissertation Research Presentation](docs/MSc_AI_Vulnerability_Detection_Research_Presentation.pdf)**  
+*Summary of the research problem, methodology, experimental evaluation, implementation and findings.*
 
 
 ## 🌍 Usefulness & Significance
